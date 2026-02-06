@@ -41,8 +41,8 @@ const Contact = () => {
     {
       icon: Phone,
       label: 'Phone',
-      value: '+91 98765 43210',
-      href: 'tel:+919876543210',
+      value: '+91 99492 72634',
+      href: 'tel:+919949272634',
       color: 'from-[#395B51] to-[#A8B69D]',
     },
     {

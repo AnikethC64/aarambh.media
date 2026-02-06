@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Users, Award, Clock, Heart, ArrowRight, Camera, Film, Palette, Target } from 'lucide-react';
+import { Users, Award, Clock, Heart, ArrowRight, Target } from 'lucide-react';
 
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -11,33 +11,6 @@ const About = () => {
     { icon: Users, label: 'Happy Clients', value: 150, suffix: '+', color: 'from-[#395B51] to-[#A8B69D]' },
     { icon: Clock, label: 'Years Experience', value: 8, suffix: '+', color: 'from-[#A8B69D] to-[#F0F1CF]' },
     { icon: Heart, label: 'Awards Won', value: 25, suffix: '+', color: 'from-[#F0F1CF] to-[#0F3834]' },
-  ];
-
-  const team = [
-    {
-      name: 'Arjun Sharma',
-      role: 'Creative Director & Founder',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Visionary storyteller with 12+ years crafting award-winning campaigns that move hearts and minds.',
-      specialty: 'Brand Strategy',
-      icon: Target,
-    },
-    {
-      name: 'Priya Patel',
-      role: 'Lead Photographer',
-      image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Master of light and shadow, capturing moments that speak louder than words.',
-      specialty: 'Visual Storytelling',
-      icon: Camera,
-    },
-    {
-      name: 'Rahul Kumar',
-      role: 'Cinematographer',
-      image: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400',
-      bio: 'Cinematic genius creating films that blur the line between art and commerce.',
-      specialty: 'Motion Pictures',
-      icon: Film,
-    },
   ];
 
   useEffect(() => {
@@ -171,52 +144,6 @@ const About = () => {
               })}
             </div>
           </div>
-        </div>
-
-        {/* Team Section */}
-        <div className="text-center mb-16">
-          <h3 className="text-4xl font-bold text-white mb-6">The Creative Minds</h3>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto font-light">
-            Meet the passionate artists and strategists who bring your vision to life with unmatched creativity and expertise.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {team.map((member, index) => {
-            const Icon = member.icon;
-            return (
-              <div
-                key={member.name}
-                className={`relative bg-gradient-to-br from-gray-800/50 to-black/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 hover:border-orange-500/50 transition-all duration-700 hover:-translate-y-4 hover:scale-105 group ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-                }`}
-                style={{ transitionDelay: `${index * 200}ms` }}
-              >
-                {/* Profile Image with Cinematic Frame */}
-                <div className="relative mb-8">
-                  <div className="relative w-32 h-32 mx-auto">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full rounded-2xl object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
-                    <div className="absolute -bottom-3 -right-3 w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-2xl">
-                      <Icon className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                </div>
-                
-                <h4 className="text-2xl font-bold text-white mb-2">{member.name}</h4>
-                <p className="text-orange-400 font-semibold mb-2">{member.role}</p>
-                <div className="text-sm text-gray-400 mb-4 font-medium">{member.specialty}</div>
-                <p className="text-gray-300 leading-relaxed font-light">{member.bio}</p>
-
-                {/* Hover Glow Effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500 -z-10"></div>
-              </div>
-            );
-          })}
         </div>
       </div>
     </section>
