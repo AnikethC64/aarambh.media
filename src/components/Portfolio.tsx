@@ -1,73 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { galleryItems, galleryFilters } from '../data/gallery';
 
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const filters = [
-    { id: 'all', label: 'All' },
-    { id: 'photography', label: 'Photography' },
-    { id: 'film', label: 'Film' },
-    { id: 'portrait', label: 'Portrait' },
-  ];
-
-  const portfolioItems = [
-    {
-      id: 1,
-      title: 'Concrete',
-      category: 'photography',
-      type: 'Series',
-      image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800',
-      year: '2025',
-    },
-    {
-      id: 2,
-      title: 'Studio No. 4',
-      category: 'portrait',
-      type: 'Portrait',
-      image: 'https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800',
-      year: '2025',
-    },
-    {
-      id: 3,
-      title: 'After Hours',
-      category: 'film',
-      type: 'Short Film',
-      image: 'https://images.pexels.com/photos/3153198/pexels-photo-3153198.jpeg?auto=compress&cs=tinysrgb&w=800',
-      year: '2024',
-    },
-    {
-      id: 4,
-      title: 'Grain',
-      category: 'photography',
-      type: 'Series',
-      image: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=800',
-      year: '2024',
-    },
-    {
-      id: 5,
-      title: 'Objects',
-      category: 'photography',
-      type: 'Product',
-      image: 'https://images.pexels.com/photos/1667088/pexels-photo-1667088.jpeg?auto=compress&cs=tinysrgb&w=800',
-      year: '2024',
-    },
-    {
-      id: 6,
-      title: 'Motion',
-      category: 'film',
-      type: 'Brand Film',
-      image: 'https://images.pexels.com/photos/3153201/pexels-photo-3153201.jpeg?auto=compress&cs=tinysrgb&w=800',
-      year: '2023',
-    },
-  ];
-
   const filteredItems =
     activeFilter === 'all'
-      ? portfolioItems
-      : portfolioItems.filter((item) => item.category === activeFilter);
+      ? galleryItems
+      : galleryItems.filter((item) => item.category === activeFilter);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -79,19 +21,23 @@ const Portfolio = () => {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     const items = sectionRef.current?.querySelectorAll('.portfolio-item');
     items?.forEach((item) => observer.observe(item));
     return () => observer.disconnect();
-  }, [filteredItems]);
+  }, [activeFilter]);
 
   useEffect(() => {
     setVisibleItems([]);
   }, [activeFilter]);
 
   return (
-    <section id="portfolio" className="bg-black py-28 md:py-36 border-t border-neutral-900" ref={sectionRef}>
+    <section
+      id="portfolio"
+      className="bg-black py-28 md:py-36 border-t border-neutral-900"
+      ref={sectionRef}
+    >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div className="max-w-2xl">
@@ -101,8 +47,8 @@ const Portfolio = () => {
             </h2>
           </div>
 
-          <div className="flex flex-wrap gap-6">
-            {filters.map((filter) => (
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            {galleryFilters.map((filter) => (
               <button
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
@@ -118,38 +64,35 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-900">
+        {/* Masonry gallery — preserves each photo's native ratio */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
           {filteredItems.map((item, index) => (
-            <a
-              key={`${item.id}-${activeFilter}`}
-              href="#"
+            <div
+              key={`${item.src}-${activeFilter}`}
               data-index={index}
               className={`portfolio-item reveal ${
                 visibleItems.includes(index) ? 'is-visible' : ''
-              } group relative block bg-black overflow-hidden`}
-              style={{ transitionDelay: `${index * 80}ms` }}
+              } group relative mb-4 break-inside-avoid overflow-hidden bg-neutral-950`}
+              style={{ transitionDelay: `${(index % 12) * 60}ms` }}
             >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-              </div>
-
-              <div className="flex items-center justify-between px-5 py-5">
-                <div>
-                  <h3 className="text-lg font-medium text-white">{item.title}</h3>
-                  <p className="text-xs uppercase tracking-widest text-neutral-500 mt-1">
-                    {item.type} · {item.year}
-                  </p>
-                </div>
-                <ArrowUpRight className="w-5 h-5 text-neutral-600 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" />
-              </div>
-            </a>
+              <img
+                src={item.src}
+                alt={`${item.label} — raw district`}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-auto object-cover grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-700"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="pointer-events-none absolute bottom-4 left-4 text-[11px] uppercase tracking-[0.3em] text-white opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                {item.label}
+              </span>
+            </div>
           ))}
         </div>
+
+        <p className="mt-10 text-xs uppercase tracking-widest text-neutral-600">
+          {filteredItems.length} frames
+        </p>
       </div>
     </section>
   );

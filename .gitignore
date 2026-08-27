@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Full-resolution shoot originals (1GB+). Kept locally only.
+# Optimized copies live in public/gallery and ARE committed/deployed.
+/public/For Websitte/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
